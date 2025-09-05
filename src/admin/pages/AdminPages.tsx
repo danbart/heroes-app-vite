@@ -4,3 +4,5 @@ export const AdminPages = () => {
         <div>AdminPages</div>
     )
 }
+
+export default AdminPages;
