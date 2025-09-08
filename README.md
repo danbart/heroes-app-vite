@@ -67,3 +67,21 @@ export default tseslint.config([
   },
 ])
 ```
+
+
+## Environment Variables
+
+To use environment variables in your Vite application, create a `.env` file in the root of your project and add your variables there. For example:
+
+```
+VITE_API_URL=http://localhost:3000
+VITE_API_KEY=your_api_key
+```
+
+You can then access these variables in your application code using `import.meta.env`:
+
+```ts
+const apiUrl = import.meta.env.VITE_API_URL
+const apiKey = import.meta.env.VITE_API_KEY
+```
+Make sure to prefix your environment variables with `VITE_` to make them accessible in your Vite application.

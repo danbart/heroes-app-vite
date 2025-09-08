@@ -1,11 +1,11 @@
 import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs"
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { getHeroesByPageAction } from "@/heroes/actions/get-heroes-by-page.action"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
 import { HeroStats } from "@/heroes/components/HeroStats"
-import {
-    Heart
-} from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import { Heart } from "lucide-react"
 import { useState } from "react"
 import { CustomJumbotron } from '../../../components/custom/CustomJumbotron'
 
@@ -15,6 +15,19 @@ export const HomePage = () => {
     const [activeTab, setActiveTab] = useState<
         'all' | 'favorites' | 'heroes' | 'villains'
     >('all');
+
+    // useEffect(() => {
+    //     getHeroesByPage(1, 10).then(({ heroes }) => console.log(heroes));
+    // }, []);
+
+    const { data: heroesResponse, isLoading, error } = useQuery({
+        queryKey: ['heroes', 1, 10],
+        queryFn: () => getHeroesByPageAction(1, 10),
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    })
+
+    console.log(heroesResponse);
+
     return (
         <>
             <>
@@ -37,10 +50,10 @@ export const HomePage = () => {
                         <TabsTrigger value="heroes" onClick={() => setActiveTab('heroes')}>Heroes (12)</TabsTrigger>
                         <TabsTrigger value="villains" onClick={() => setActiveTab('villains')}>Villains (2)</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="all" >  <HeroGrid /> </TabsContent>
-                    <TabsContent value="favorites" >  <HeroGrid /></TabsContent>
-                    <TabsContent value="heroes" >  <HeroGrid /></TabsContent>
-                    <TabsContent value="villains" >  <HeroGrid /></TabsContent>
+                    <TabsContent value="all" >  <HeroGrid heroes={heroesResponse?.heroes ?? []} /> </TabsContent>
+                    <TabsContent value="favorites" >  <HeroGrid heroes={heroesResponse?.heroes ?? []} /> </TabsContent>
+                    <TabsContent value="heroes" >  <HeroGrid heroes={heroesResponse?.heroes ?? []} /> </TabsContent>
+                    <TabsContent value="villains" >  <HeroGrid heroes={heroesResponse?.heroes ?? []} /> </TabsContent>
                 </Tabs>
 
                 {/* Pagination */}
