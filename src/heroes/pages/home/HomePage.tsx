@@ -6,23 +6,38 @@ import { HeroGrid } from "@/heroes/components/HeroGrid"
 import { HeroStats } from "@/heroes/components/HeroStats"
 import { useQuery } from "@tanstack/react-query"
 import { Heart } from "lucide-react"
-import { useState } from "react"
+import { useMemo } from "react"
+import { useSearchParams } from "react-router"
 import { CustomJumbotron } from '../../../components/custom/CustomJumbotron'
 
 
 export const HomePage = () => {
 
-    const [activeTab, setActiveTab] = useState<
-        'all' | 'favorites' | 'heroes' | 'villains'
-    >('all');
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const activeTab = searchParams.get('tab') || 'all';
+    const page = searchParams.get('page') || '1';
+    const limit = searchParams.get('limit') || '6';
+    const setActiveTab = (tab: string) => {
+        setSearchParams({ tab });
+    }
+
+    const selectActiveTab = useMemo(() => {
+        const tabs = ['all', 'favorites', 'heroes', 'villains'];
+        return tabs.includes(activeTab) ? activeTab : 'all';
+    }, [activeTab]);
+
+    // const [activeTab, setActiveTab] = useState<
+    // 'all' | 'favorites' | 'heroes' | 'villains'
+    // >('all');
 
     // useEffect(() => {
     //     getHeroesByPage(1, 10).then(({ heroes }) => console.log(heroes));
     // }, []);
 
     const { data: heroesResponse, isLoading, error } = useQuery({
-        queryKey: ['heroes', 1, 10],
-        queryFn: () => getHeroesByPageAction(1, 10),
+        queryKey: ['heroes', { page, limit }],
+        queryFn: () => getHeroesByPageAction(+page, +limit),
         staleTime: 1000 * 60 * 5, // 5 minutes
     })
 
@@ -40,7 +55,7 @@ export const HomePage = () => {
 
 
                 {/* Tabs */}
-                <Tabs value={activeTab} className="mb-8">
+                <Tabs value={selectActiveTab} className="mb-8">
                     <TabsList className="grid w-full grid-cols-4">
                         <TabsTrigger value="all" onClick={() => setActiveTab('all')}>All Characters (16)</TabsTrigger>
                         <TabsTrigger value="favorites" className="flex items-center gap-2" onClick={() => setActiveTab('favorites')}>
@@ -57,7 +72,7 @@ export const HomePage = () => {
                 </Tabs>
 
                 {/* Pagination */}
-                <CustomPagination />
+                <CustomPagination totalPages={heroesResponse?.pages ?? 0} />
             </>
         </>
     )
