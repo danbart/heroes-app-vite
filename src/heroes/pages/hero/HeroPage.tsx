@@ -193,28 +193,28 @@ export const HeroPage = () => {
                                         <div className="flex-1">
                                             <Progress value={superheroData?.strength} className="h-4" />
                                         </div>
-                                        <div className="w-12 text-right font-bold">{superheroData?.strength}/10</div>
+                                        <div className="w-12 text-right font-bold">{superheroData?.strength}/100</div>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <div className="w-24 text-sm font-medium">Inteligencia</div>
                                         <div className="flex-1">
                                             <Progress value={superheroData?.intelligence} className="h-4" />
                                         </div>
-                                        <div className="w-12 text-right font-bold">{superheroData?.intelligence}/10</div>
+                                        <div className="w-12 text-right font-bold">{superheroData?.intelligence}/100</div>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <div className="w-24 text-sm font-medium">Velocidad</div>
                                         <div className="flex-1">
                                             <Progress value={superheroData?.speed} className="h-4" />
                                         </div>
-                                        <div className="w-12 text-right font-bold">{superheroData?.speed}/10</div>
+                                        <div className="w-12 text-right font-bold">{superheroData?.speed}/100</div>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <div className="w-24 text-sm font-medium">Resistencia</div>
                                         <div className="flex-1">
                                             <Progress value={superheroData?.durability} className="h-4" />
                                         </div>
-                                        <div className="w-12 text-right font-bold">{superheroData?.durability}/10</div>
+                                        <div className="w-12 text-right font-bold">{superheroData?.durability}/100</div>
                                     </div>
                                 </div>
                             </CardContent>
