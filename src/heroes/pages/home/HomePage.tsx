@@ -1,4 +1,5 @@
 import { CustomBreadcrumbs } from "@/components/custom/CustomBreadcrumbs"
+import { CustomJumbotron } from '@/components/custom/CustomJumbotron'
 import { CustomPagination } from "@/components/custom/CustomPagination"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
@@ -8,7 +9,6 @@ import { usePaginateHero } from "@/heroes/hooks/usePaginateHero"
 import { Heart } from "lucide-react"
 import { useMemo } from "react"
 import { useSearchParams } from "react-router"
-import { CustomJumbotron } from '../../../components/custom/CustomJumbotron'
 
 
 export const HomePage = () => {
