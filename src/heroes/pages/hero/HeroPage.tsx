@@ -6,14 +6,26 @@ import { HeroInfo } from "@/heroes/components/HeroInfo"
 import { HeroPowers } from "@/heroes/components/HeroPowers"
 import { useHero } from "@/heroes/hooks/useHero"
 import { Award, Gauge, Users, Zap } from "lucide-react"
-import { useParams } from "react-router"
+import { Link, useParams } from "react-router"
 
 
 
 export const HeroPage = () => {
     const { idSlug = '' } = useParams();
 
-    const { data: superheroData } = useHero({ idSlug });
+    const { data: superheroData, isError } = useHero({ idSlug });
+
+    if (isError) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="text-center">
+                    <h1 className="text-4xl font-bold text-red-600 mb-4">Héroe No Encontrado</h1>
+                    <p className="text-gray-600">Lo sentimos, no pudimos encontrar el héroe que estabas buscando.</p>
+                    <Link to="/" className="text-blue-500 hover:underline">Volver a la página de inicio</Link>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
