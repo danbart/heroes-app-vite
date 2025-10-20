@@ -4,16 +4,18 @@ import { CustomPagination } from "@/components/custom/CustomPagination"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HeroGrid } from "@/heroes/components/HeroGrid"
 import { HeroStats } from "@/heroes/components/HeroStats"
+import { FavoriteHeroContext } from "@/heroes/context/FavoriteHeroContext"
 import { useHeroSummary } from "@/heroes/hooks/useHeroSummary"
 import { usePaginateHero } from "@/heroes/hooks/usePaginateHero"
 import { Heart } from "lucide-react"
-import { useMemo } from "react"
+import { use, useMemo } from "react"
 import { useSearchParams } from "react-router"
 
 
 export const HomePage = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const { favoriteCount, favoriteHeroes } = use(FavoriteHeroContext);
 
     const activeTab = searchParams.get('tab') || 'all';
     const page = searchParams.get('page') || '1';
@@ -63,19 +65,19 @@ export const HomePage = () => {
                         <TabsTrigger value="all" onClick={() => setActiveTab('all', 'all')}>All Characters ({summary?.totalHeroes})</TabsTrigger>
                         <TabsTrigger value="favorites" className="flex items-center gap-2" onClick={() => setActiveTab('favorites', 'favorites')}>
                             <Heart className="h-4 w-4" />
-                            Favorites (3)
+                            Favorites ({favoriteCount})
                         </TabsTrigger>
                         <TabsTrigger value="heroes" onClick={() => setActiveTab('heroes', 'hero')}>Heroes ({summary?.heroCount})</TabsTrigger>
                         <TabsTrigger value="villains" onClick={() => setActiveTab('villains', 'villain')}>Villains ({summary?.villainCount})</TabsTrigger>
                     </TabsList>
                     <TabsContent value="all" >  <HeroGrid heroes={heroesResponse?.heroes ?? []} /> </TabsContent>
-                    <TabsContent value="favorites" >  <HeroGrid heroes={heroesResponse?.heroes ?? []} /> </TabsContent>
+                    <TabsContent value="favorites" >  <HeroGrid heroes={favoriteHeroes} /> </TabsContent>
                     <TabsContent value="heroes" >  <HeroGrid heroes={heroesResponse?.heroes ?? []} /> </TabsContent>
                     <TabsContent value="villains" >  <HeroGrid heroes={heroesResponse?.heroes ?? []} /> </TabsContent>
                 </Tabs>
 
                 {/* Pagination */}
-                <CustomPagination totalPages={heroesResponse?.pages ?? 0} />
+                {selectActiveTab !== 'favorites' && <CustomPagination totalPages={heroesResponse?.pages ?? 0} />}
             </>
         </>
     )
